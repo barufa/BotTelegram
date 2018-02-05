@@ -3,17 +3,32 @@ module Types where
 import Web.Telegram.API.Bot (ChatId)
 import Map
 
-type Week     = (Bool,Bool,Bool,Bool,Bool,Bool,Bool,Bool)
-type Info     = (Empresa,Time,Time,Week)
-type Viaje    = (Ciudad,Ciudad,[Info])
-type Empresa  = String
-type Ciudad   = String
-type Time     = String
-type Variable = String
-type Memoria  = Map Integer (Map Variable Comand)
-type Mensaje  = (ChatId,String)
+newtype Week     = W {runW :: (Bool,Bool,Bool,Bool,Bool,Bool,Bool,Bool)}
+newtype Info     = I {runI :: (Empresa,Time,Time,Week)}
+newtype Viaje    = V {runV :: (Ciudad,Ciudad,[Info])}
+newtype Empresa  = E {runE :: String} deriving (Ord,Eq)
+newtype Ciudad   = City {runCity :: String} deriving (Ord,Eq)
+newtype Time     = T {runT :: (Integer,Integer)} deriving (Ord,Eq)
+newtype Variable = Var {runVar :: String} deriving (Ord,Eq)
+newtype Mensaje  = Msm {runMsm :: (ChatId,String)}
+newtype Memoria  = Memo {runMemo :: (Map Integer (Map Variable Comand))}
 
 data Error a = Err String | Result a deriving Show
+
+instance Show Week where
+   show (W (lu,ma,mi,ju,vi,sa,dom,fe)) = (f lu)++(f ma)++(f mi)++(f ju)++(f vi)++(f sa)++(f dom)++(f fe)
+                                         where f = (\b->if b then "\9989" else "\10062")
+instance Show Ciudad where
+   show (City c) = c
+instance Show Empresa where
+   show (E e) = e
+instance Show Variable where
+   show (Var v) = v
+instance Show Mensaje where
+   show (Msm m) = show m
+instance Show Time where
+   show (T (x,y)) = (show x)++":"++(show y)
+   
 
 ------------------------
 ---AST de lo Comandos---

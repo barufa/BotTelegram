@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Html(
  consulta,
  make_url,
@@ -75,25 +76,34 @@ link f = H (do{x<-f;return (Result x)})
 
 ------------------------------------------
 
+totime :: String -> Maybe Time
+totime (' ':xs)             = totime xs
+totime (x1:x2:':':x4:x5:xs) = Just $ T (read [x1,x2]::Integer,read [x4,x5]::Integer)
+totime xs                   = Nothing
+
 findEmpresa :: Reader Empresa
 findEmpresa = do search (pack "a") (pack "title") (pack "Datos de la empresa")
                  txt<-next
                  case txt of
-                   ContentText t -> return (unpack t)
+                   ContentText t -> return $ E (unpack t)
                    _             -> throw "La etiqueta encontrada en findEmpresa no tiene formato texto"
 
-findSale :: Reader Empresa
+findSale :: Reader Time
 findSale = do search (pack "td") (pack "class") (pack "sale")
               txt<-next
               case txt of
-                ContentText t -> return (unpack t)
+                ContentText t -> case totime (unpack t) of
+                                  Just x  -> return $ x
+                                  Nothing -> throw "Error al buscar el horario"
                 _             -> throw "La etiqueta encontrada en findSale no tiene formato texto"
 
-findLlega :: Reader Empresa
-findLlega = do search (pack "td") (pack "class") (pack "llega")
+findLlega :: Reader Time
+findLlega = do search (pack "td") (pack "class") (pack "sale")
                txt<-next
                case txt of
-                 ContentText t -> return (unpack t)
+                 ContentText t -> case totime (unpack t) of
+                                   Just x  -> return $ x
+                                   Nothing -> throw "Error al buscar el horario"
                  _             -> throw "La etiqueta encontrada en findLlega no tiene formato texto"
 
 findDia :: Reader Bool
@@ -113,14 +123,14 @@ findWeek = do lun<-findDia
               sab<-findDia
               dom<-findDia
               fer<-findDia
-              return (lun,mar,mie,jue,vie,sab,dom,fer)
+              return $ W (lun,mar,mie,jue,vie,sab,dom,fer)
 
 findViaje :: Reader Info--Parsea un viaje
 findViaje = do emp  <-findEmpresa
                sal  <-findSale
                lle  <-findLlega
                week <-findWeek
-               return (emp,sal,lle,week)
+               return $ I (emp,sal,lle,week)
 
 findAll::Reader [Info]--Dado un estado busca todos los viajes y falla si no encuentra nada
 findAll = do v<-findViaje
@@ -158,22 +168,22 @@ consulta_all ciudad from = do url  <- make_url from ciudad
                               html <- link (get url)
                               page <- link (parserHtml html)
                               xs   <- extracHtml page
-                              return $ if from then ("Rosario",ciudad,xs) else (ciudad,"Rosario",xs) 
+                              return $ if from then V (City "Rosario",ciudad,xs) else V (ciudad,City "Rosario",xs) 
                                                  
 consulta_entre::Ciudad->Bool->Time->Time->Handler Viaje--Devuelve viajes entre horarios
-consulta_entre ciudad from l r | l>r || l>="24:00" || r>="24:00"  = fail "El rango horario es inconsistente"
-                               | l<=r                             = do (x,y,xs)<-consulta_all ciudad from
-                                                                       return (x,y,filter cmp xs)
-                                                                       where cmp=(\v->let t=time v in l<=t && t<=r)
-                                                                             time (e,s,l,w) = s
+consulta_entre ciudad from l r | l>r || l>=(T (24,00)) || r>=(T (24,00))  = fail "El rango horario es inconsistente"
+                               | l<=r                                     = do V (x,y,xs)<-consulta_all ciudad from
+                                                                               return $ V (x,y,filter cmp xs)
+                                                                            where cmp=(\v->let t=time v in l<=t && t<=r)
+                                                                                  time (I (e,s,l,w)) = s
 
 consulta_n::Ciudad->Bool->Int->Handler Viaje--Devuelve los proximos n viajes
-consulta_n ciudad from n = do h        <- getTime
-                              (x,y,xs) <- consulta_all ciudad from
-                              let time (e,s,l,w) = s
+consulta_n ciudad from n = do h          <- getTime
+                              V (x,y,xs) <- consulta_all ciudad from
+                              let time (I (e,s,l,w)) = s
                                   cmp=(\v->let t=time v in h<=t)
                                   rs = (filter cmp xs)++(filter (not.cmp) xs)
-                               in return (x,y,take n rs)
+                               in return $ V (x,y,take n rs)
 
 --------------------------
 ---Funciones Auxiliares---
@@ -202,11 +212,13 @@ make_url from ciudad = case codigo ciudad of
                           Just n  -> if from then make_url' 2000 n else  make_url' n 2000--2000 es el codigo de rosario
                        where make_url' n m = return $ "http://www.terminalrosario.gob.ar/buscador/"++show n++"/"++show m++"/"
 
-getTime::Handler String--Obtiene la hora del sistema
+getTime::Handler Time--Obtiene la hora del sistema
 getTime = do t  <- link (getZonedTime)
              t' <- link (timed (show t))
              case t' of
-               Just h  -> return h
+               Just h  -> case totime h of 
+                            Just x  -> return $ x
+                            Nothing -> fail "Error al leer la hora del sistema"
                Nothing -> fail "Error al leer la hora del sistema"
            where timed (h1:h2:c:m1:m2:xs) | c==':'    = return (Just [h1,h2,c,m1,m2])
                                           | otherwise = timed (h2:c:m1:m2:xs)

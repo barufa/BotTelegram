@@ -72,7 +72,7 @@ parserStart = link (reserved lis "/start") >> return Start
 parserViajes :: Parserror Comand--Se encarga del comando viajes
 parserViajes = do link $ reserved lis "viajes"
                   b  <- link $  try (symbol lis "desde") <|> (symbol lis "a")
-                  c  <- parserciudad--Porque no propaga?
+                  c  <- parserciudad
                   op <- parserOption
                   return $ Query (b=="a") c op
                     
@@ -101,15 +101,13 @@ parseroption_t = do symbol lis ","
                     c<-natural lis
                     symbol lis  ":"
                     d<-natural lis
-                    return $ Between (hora a b) (hora c d)
-                    where hora n m = (fshow n)++":"++(fshow m)
-                          fshow n = if n<10 then "0"++(show n) else show n
+                    return $ Between (T (a,b)) (T (c,d))
                               
 parserciudad :: Parserror Ciudad--Parsea una ciudad
 parserciudad = do c<-link $ many $ satisfy (\c->isAlphaNum c || c=='(' || c==')' || c==' ' || c=='.')
                   case fix c of
                    [] -> fail "Error al leer la ciudad"
-                   xs -> if isCiudad xs then return xs else throw $ "La ciudad ingresada no es valida\n"++perhaps xs
+                   ys -> let xs=City ys in if isCiudad xs then return xs else throw $ "La ciudad ingresada no es valida\n"++perhaps xs
 
 ---Comando Let---
 parserLet :: Parserror Comand--Se encarga del comando Let
@@ -120,7 +118,7 @@ parserLet = do link $ reserved lis "guardar"
                return $ Let v cm
 
 parserVar::Parserror Variable--Parsea una variable
-parserVar = link $ identifier lis
+parserVar = link $ identifier lis >>= return.Var
 
 ---Comando Do---
 parserDo :: Parserror Comand--Se encarga del comando Mostrar
@@ -136,7 +134,6 @@ readComm :: String -> IO (Error Comand)
 readComm s = case parserComm s of
                   Left e  -> return $ Err "Error, el comando ingresado no es valido."
                   Right c -> return c
-                  --Imprime los errores para debaguear
 --------------------------
 ---Funciones Auxiliares---
 --------------------------

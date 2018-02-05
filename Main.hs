@@ -1,6 +1,3 @@
---todo: Debaguear
---todo: Finalizar(acomodar,revisar ortografia,imprimir informe,etc.)
-
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data
@@ -51,12 +48,12 @@ run_bot manager lastUpdate d = do day<-link getDay
                                     (Err e,l)               -> if diffDays d day < dias
                                                                  then run_bot manager l d
                                                                  else run_bot manager initUpdateId day
-                                    (Result (id,txt),updid) -> do com<-link $ readComm txt--Parseo los comandos
-                                                                  case com of
-                                                                   Err e'   -> do{link (send manager (id,e'));run_bot manager updid day}--Si hubo un error lo comunico,
-                                                                   Result x -> do{solveComm prt prq id x;run_bot manager updid day}
-                                                                               where prt = (\s->link $ send manager (id,s))
-                                                                                     prq = (\s->link $ send manager (queja_id,s))
+                                    (Result (Msm (id,txt)),updid) -> do com<-link $ readComm txt--Parseo los comandos
+                                                                        case com of
+                                                                         Err e'   -> do{link (send manager (Msm (id,e')));run_bot manager updid day}--Si hubo un error lo comunico,
+                                                                         Result x -> do{solveComm prt prq id x;run_bot manager updid day}
+                                                                                     where prt = (\s->link $ send manager (Msm (id,s)))
+                                                                                           prq = (\s->link $ send manager (Msm (queja_id,s)))
 main :: IO ()
 main = do manager <- bot_init--Inicializa el bot
           day     <- getDay
@@ -93,19 +90,17 @@ solveComm prt prq id (Query b ciudad opt) = do res<-link $ runH $ consulta ciuda
                                                      imp p (x:xs) = p x >> imp p xs
 
 showQuery::Viaje->[String]
-showQuery (a,b,[]) = ["No hay viajes disponibles desde "++trcd a++" a "++trcd b++"\n"]
-showQuery (a,b,xs) = case showQuery' xs of
-                       []     -> ["No hay viajes disponibles desde "++p++" a "++q++"\n"]
-                       (x:[]) -> [("Viajes desde "++p++" a "++q++":  \128652\n")++x++("\nBuen Viaje! \128075\128075\128075\n")]
-                       (x:xs) -> ["Viajes desde "++p++" a "++q++":  \128652\n"++x]++xs++["\nBuen Viaje! \128075\128075\128075\n"]
-                     where p = trcd a
-                           q = trcd b
-                           tostr []     = ""
-                           tostr ((e,s,l,w):xs) = "Empresa "++e++", sale "++s++" y llega "++l++"\nDías disponibles:\n"++(showSemana w)++"\n"++(tostr xs) 
-                           showSemana (lu,ma,mi,ju,vi,sa,dom,fe) = (f lu)++(f ma)++(f mi)++(f ju)++(f vi)++(f sa)++(f dom)++(f fe)
-                           f = (\b->if b then "\9989" else "\10062")
-                           showQuery' xs | length xs>45 = tostr (take 45 xs):showQuery' (drop 45 xs)
-                                         | otherwise    = [tostr xs]
+showQuery (V (a,b,[])) = ["No hay viajes disponibles desde "++runCity(trcd a)++" a "++runCity(trcd b)++"\n"]
+showQuery (V (a,b,xs)) = case showQuery' xs of
+                          []     -> ["No hay viajes disponibles desde "++p++" a "++q++"\n"]
+                          (x:[]) -> [("Viajes desde "++p++" a "++q++":  \128652\n")++x++("\nBuen Viaje! \128075\128075\128075\n")]
+                          (x:xs) -> ["Viajes desde "++p++" a "++q++":  \128652\n"++x]++xs++["\nBuen Viaje! \128075\128075\128075\n"]
+                        where p = runCity (trcd a)
+                              q = runCity (trcd b)
+                              tostr []     = ""
+                              tostr (I (e,s,l,w):xs) = "Empresa "++show e++", sale "++show s++" y llega "++show l++"\nDías disponibles:\n"++show w++"\n"++(tostr xs) 
+                              showQuery' xs | length xs>45 = tostr (take 45 xs):showQuery' (drop 45 xs)
+                                            | otherwise    = [tostr xs]
 
 getDay :: IO Day
 getDay = getCurrentTime >>= return.utctDay

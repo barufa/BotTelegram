@@ -52,8 +52,8 @@ send manager msm = do r<-send' manager msm
 --------------------------
 
 send' :: Manager -> Mensaje -> IO (Either ServantError MessageResponse)
-send' manager (chatId,msm) = let request = sendMessageRequest chatId (pack msm)
-                              in sendMessage bot_token request manager
+send' manager (Msm (chatId,msm)) = let request = sendMessageRequest chatId (pack msm)
+                                    in sendMessage bot_token request manager
 
 extrac :: [Update] -> Maybe Int -> (Error Mensaje,Maybe Int)--Extrae los mensajes de una lista de actualizaciones
 extrac []     n = (Err "La lista de actualizaciones es vacia",suc n)
@@ -68,4 +68,4 @@ suc (Just n) = Just (n+1)
 extrac' :: Update -> Maybe Mensaje
 extrac' upd = do msm<-message upd
                  txt<-text msm
-                 return (ChatId (chat_id (chat msm)),unpack txt)
+                 return $ Msm (ChatId (chat_id (chat msm)),unpack txt)
