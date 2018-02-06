@@ -16,7 +16,7 @@ newtype Memoria  = Memo {runMemo :: (Map Integer (Map Variable Comand))}
 data Error a = Err String | Result a deriving Show
 
 instance Show Week where
-   show (W (lu,ma,mi,ju,vi,sa,dom,fe)) = (f lu)++(f ma)++(f mi)++(f ju)++(f vi)++(f sa)++(f dom)++(f fe)
+   show (W (lu,ma,mi,ju,vi,sa,dom,fe)) = "L"++(f lu)++"M"++(f ma)++"M"++(f mi)++"J"++(f ju)++"V"++(f vi)++"S"++(f sa)++"D"++(f dom)++"F"++(f fe)
                                          where f = (\b->if b then "\9989" else "\10062")
 instance Show Ciudad where
    show (City c) = c

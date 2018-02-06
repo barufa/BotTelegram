@@ -36,5 +36,5 @@ Respuesta:
 
 Empresa Los Ranqueles, sale 12:00 y llega 13:00
 
-Días disponibles: :white_check_mark: :negative_squared_cross_mark: :white_check_mark: :white_check_mark: :white_check_mark: :white_check_mark: :white_check_mark: :negative_squared_cross_mark:
+Días disponibles: L:white_check_mark: M:negative_squared_cross_mark: M:white_check_mark: J:white_check_mark: V:white_check_mark: S:white_check_mark: D:white_check_mark: F:negative_squared_cross_mark:
 (indicando que no esta disponibles los días Martes y feriados). 
