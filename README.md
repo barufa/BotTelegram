@@ -15,7 +15,7 @@ Las consultas que puede realizar son:
 
  * Viajes a/desde CIUDAD, ver todos: Muestra todos los viajes.
 
- * Viajes a/desde CIUDAD, entre HORA y HORA: Muestra viajes entre el rango horario dado.
+ * Viajes a/desde CIUDAD, entre HORA y HORA: Muestra viajes entre el rango horario dado (La HORA debe tener el formato hh:mm).
 
  * Guardar NOMBRE = COMANDO: Almacena temporalmente un comando con el nombre seleccionado para ser ejecutado con el comando mostrar (las variables deben ser cadenas de caracteres en minúscula y/o numeros).
 
@@ -36,5 +36,5 @@ Respuesta:
 
 Empresa Los Ranqueles, sale 12:00 y llega 13:00
 
-Días disponibles: L:white_check_mark: M:negative_squared_cross_mark: M:white_check_mark: J:white_check_mark: V:white_check_mark: S:white_check_mark: D:white_check_mark: F:negative_squared_cross_mark:
+Días disponibles: L(:white_check_mark:) M(:negative_squared_cross_mark:) M(:white_check_mark:) J(:white_check_mark:) V(:white_check_mark:) S(:white_check_mark:) D(:white_check_mark:) F(:negative_squared_cross_mark:)
 (indicando que no esta disponibles los días Martes y feriados). 
