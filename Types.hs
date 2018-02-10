@@ -27,8 +27,9 @@ instance Show Variable where
 instance Show Mensaje where
    show (Msm m) = show m
 instance Show Time where
-   show (T (x,y)) = (show x)++":"++(show y)
-   
+   show (T (x,y)) = (show' x)++":"++(show' y)
+                    where show' x | x<10      = "0"++(show x)
+                                  | otherwise = show x
 
 ------------------------
 ---AST de lo Comandos---
