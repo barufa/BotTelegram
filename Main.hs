@@ -43,7 +43,7 @@ link mn = M (\s->do{x<-mn;return (x,s)})
 -------------------------
 run_bot :: Manager -> Maybe Int -> Day -> Mem IO ()--Funcion principal del bot. Nunca deberia terminar
 run_bot manager lastUpdate d = do day<-link getDay
-                                  upd<-link $ receive manager lastUpdate--Puedo modificarlo calcular con diferencias de tiempo
+                                  upd<-link $ receive manager lastUpdate
                                   case upd of
                                     (Err e,l)               -> if diffDays d day < dias
                                                                  then run_bot manager l d
