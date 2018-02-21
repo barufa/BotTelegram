@@ -1,13 +1,5 @@
-all: build remove
-
-build:
-	ghc Main.hs
-	mv Main MeQuieroVolver
-
-remove:
-	rm -f *.hi *.o
-
-clean: remove
-	rm -f Main MeQuieroVolver
-
-
+install:
+	@echo "Instalando..."
+	@cabal install MeQuieroVolver.cabal
+	@cd src;make all
+	mv src/MeQuieroVolver MeQuieroVolver

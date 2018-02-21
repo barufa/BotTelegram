@@ -4,6 +4,12 @@ Un bot de telegram cuya función es brindar información acerca de los próximos
 ## Como funciona?
 Para empezar debe iniciar una charla con el bot desde la aplicacion Telegram, buscandolo con el nombre MeQuieroVolver.
 
+## Instalación
+Previo a la instalación del programa se deben tener instalados los programas:
+ * ghc : https://www.haskell.org/ghc/
+ * cabal : https://www.haskell.org/cabal/
+Para instalar el programa ejecute el siguiente comando en la terminal desde el directorio donde estén almacenados los archivos: 'make install'.
+
 ## Comandos
 Las consultas que puede realizar son:
 
