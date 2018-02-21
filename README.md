@@ -8,8 +8,7 @@ Para empezar debe iniciar una charla con el bot desde la aplicacion Telegram, bu
 Previo a la instalación del programa se deben tener instalados los programas:
  * ghc : https://www.haskell.org/ghc/
  * cabal : https://www.haskell.org/cabal/
-
-Para instalar el programa ejecute el siguiente comando en la terminal desde el directorio donde estén almacenados los archivos: 'make install'.
+\\Para instalar el programa ejecute el siguiente comando en la terminal desde el directorio donde estén almacenados los archivos: 'make install'.
 
 ## Comandos
 Las consultas que puede realizar son:
@@ -44,4 +43,4 @@ Respuesta:
 Empresa Los Ranqueles, sale 12:00 y llega 13:00
 
 Días disponibles: L(:white_check_mark:) M(:negative_squared_cross_mark:) M(:white_check_mark:) J(:white_check_mark:) V(:white_check_mark:) S(:white_check_mark:) D(:white_check_mark:) F(:negative_squared_cross_mark:)
-(indicando que no esta disponibles los días Martes y feriados). 
+(indicando que no esta disponibles los días Martes y feriados).
