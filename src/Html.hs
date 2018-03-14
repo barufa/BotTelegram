@@ -142,9 +142,8 @@ findAll = do v<-findViaje
 extracHtml::Env->Handler [Info]--Busca los viajes
 extracHtml ts = case fst (runSt findAll ts) of
                   Result x -> return x
-                  Err e    -> fail "Error al buscar la información solicitada, es posible que no haya viajes disponibles\n"
-                              --Error que receibe el usuario
-
+                  Err e    -> link (errorstr (show e)) >> (fail "Error al buscar la información solicitada, es posible que no haya viajes disponibles\n")
+                                                               --Error que receibe el usuario
 ------------------------------------------------
 
 parserHtml::String->IO Env--Parsea el html y me lo devuelve como Env([Token])
@@ -224,3 +223,5 @@ getTime = do t  <- link (getZonedTime)
                                           | otherwise = timed (h2:c:m1:m2:xs)
                  timed _                              = return Nothing
 
+errorstr::String -> IO ()
+errorstr s = putStr ("Error HTML: "++s++"\n")

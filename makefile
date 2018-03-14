@@ -4,5 +4,5 @@ install:
 	@stack build
 
 run:
-	@echo "Ejecutando Programa..."
+	@echo "Iniciando Programa..."
 	@stack exec MeQuieroVolver-exe

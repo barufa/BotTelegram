@@ -132,11 +132,14 @@ parserDo = do link $ reserved lis "mostrar"
 --Se encarga de parsear la string y devolver los comando que esta almacena(funcion a modo de interfaz)
 readComm :: String -> IO (Error Comand)
 readComm s = case parserComm s of
-                  Left e  -> return $ Err "Error, el comando ingresado no es valido."
+                  Left e  -> errorstr s (show e) >> (return $ Err "Error, el comando ingresado no es valido.")
                   Right c -> return c
 --------------------------
 ---Funciones Auxiliares---
 --------------------------
+
+errorstr :: String -> String -> IO ()
+errorstr s e = putStr $ "Comando: "++s++" -> "++e++"\n"
 
 parserComm' :: Parserror Comand--Se encarga de parsear los comandos
 parserComm' = let help   = runP parserHelp
