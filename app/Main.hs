@@ -57,6 +57,7 @@ run_bot manager lastUpdate d = do day<-link getDay
 main :: IO ()
 main = do manager <- bot_init--Inicializa el bot
           day     <- getDay
+          putStr "El bot se ha iniciado correctamente\n"
           runM (run_bot manager initUpdateId day) init_mem--Funcion principal. Se encarga de recibir y responder las consultas
           putStr "Fin del programa\n"--Para el compilador
 

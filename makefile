@@ -1,6 +1,8 @@
 install:
 	@echo "Instalando..."
-	@cabal update	
-	@cabal install MeQuieroVolver.cabal
-	@cd src;make all
-	mv src/MeQuieroVolver MeQuieroVolver
+	@stack setup
+	@stack build
+
+run:
+	@echo "Ejecutando Programa..."
+	@stack exec MeQuieroVolver-exe

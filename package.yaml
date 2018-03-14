@@ -1,0 +1,59 @@
+name:                MeQuieroVolver
+version:             0.1.2.0
+github:              "barufa/BotTelegram"
+license:             BSD3
+author:              "Bruno Baruffaldi"
+maintainer:          "baruffaldibruno@gmail.com"
+copyright:           "2018 Bruno Baruffaldi"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on Github at <https://github.com/barufa/BotTelegram#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- text >= 1.2 && < 1.3
+- parsec >= 3.1 && < 3.2
+- time >= 1.6 && < 1.7
+- html-parse >= 0.2 && < 0.3               
+- servant-client >= 0.11 && < 0.12
+- http-client >= 0.5 && < 0.6
+- http-client-tls >= 0.3 && < 0.4
+- RBTree >= 0.0.5 && < 1
+- bktrees >= 0.1 && < 0.2
+- telegram-api >= 0.7.1.0 && < 0.7.2
+- HTTP
+
+library:
+  source-dirs: src
+
+executables:
+  MeQuieroVolver-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - MeQuieroVolver
+
+tests:
+  MeQuieroVolver-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - MeQuieroVolver
