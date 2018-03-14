@@ -5,7 +5,7 @@ Un bot de telegram cuya función es brindar información acerca de los próximos
 Para empezar debe iniciar una charla con el bot desde la aplicacion Telegram, buscandolo con el nombre MeQuieroVolver.
 
 ## Instalación
-En el archivo Informe.pdf se especifican los pasos a seguir para instalar el programa.
+En el archivo Informe.pdf se especifican los pasos a seguir para instalar el programa
 
 ## Comandos
 Las consultas que puede realizar son:
