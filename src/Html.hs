@@ -98,7 +98,7 @@ findSale = do search (pack "td") (pack "class") (pack "sale")
                 _             -> throw "La etiqueta encontrada en findSale no tiene formato texto"
 
 findLlega :: Reader Time
-findLlega = do search (pack "td") (pack "class") (pack "sale")
+findLlega = do search (pack "td") (pack "class") (pack "llega")
                txt<-next
                case txt of
                  ContentText t -> case totime (unpack t) of

@@ -74,7 +74,7 @@ solveComm prt prq id Ciudades = do prt "Las ciudades disponibles son:\n"
                                    prt $ printCiudades 500 750
                                    prt $ printCiudades 750 1000
 solveComm prt prq id (Let var c)  = save id var c >> prt "Variable guardada exitosamente"
-solveComm prt prq id (Complain s) = prq $ "Queja: "++s++"\nAutor: "++show id++"\n"
+solveComm prt prq id (Complain s) = (prt "Lo tendremos en cuenta \128077 \n") >> prq ("Queja: "++s++"\nAutor: "++show id++"\n")
 solveComm prt prq id (Do var)     = do r<-load id var
                                        case r of
                                         Err e    -> prt e
