@@ -108,7 +108,7 @@ findLlega = do search (pack "td") (pack "class") (pack "llega")
 
 findDia :: Reader Bool
 findDia = do tk<-search (pack "img") (pack "class") (pack "yes-no")
-             case extracAttr tk (pack "src") of
+             case extracAttr tk attr of
                Nothing -> throw "El toquen encontrado en findDia no contine la etiqueta src"
                Just s  -> return (s==icon_yes)
              where attr=pack "src";icon_yes=pack "http://www.terminalrosario.gob.ar/wp-content/themes/terminal-rosario/images/table-icon-yes.png"
@@ -143,7 +143,7 @@ extracHtml::Env->Handler [Info]--Busca los viajes
 extracHtml ts = case fst (runSt findAll ts) of
                   Result x -> return x
                   Err e    -> link (errorstr (show e)) >> (fail "Error al buscar la información solicitada, es posible que no haya viajes disponibles\n")
-                                                               --Error que receibe el usuario
+                                   --Error del parser     --Error que receibe el usuario
 ------------------------------------------------
 
 parserHtml::String->IO Env--Parsea el html y me lo devuelve como Env([Token])
