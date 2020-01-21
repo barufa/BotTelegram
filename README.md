@@ -2,7 +2,7 @@
 Un bot de telegram cuya función es brindar información acerca de los próximos horarios de colectivos de la terminal de ómnibus de rosario.
 
 ## Como funciona?
-Para empezar debe iniciar una charla con el bot desde la aplicacion Telegram, buscandolo con el nombre MeQuieroVolver.
+Para empezar debe iniciar una charla con el bot desde la aplicación Telegram, buscandolo con el nombre MeQuieroVolver.
 
 ## Instalación
 En el archivo Informe.pdf se especifican los pasos a seguir para instalar el programa
@@ -20,11 +20,11 @@ Las consultas que puede realizar son:
 
  * Viajes a/desde CIUDAD, entre HORA y HORA: Muestra viajes entre el rango horario dado (La HORA debe tener el formato hh:mm).
 
- * Guardar NOMBRE = COMANDO: Almacena temporalmente un comando con el nombre seleccionado para ser ejecutado con el comando mostrar (las variables deben ser cadenas de caracteres en minúscula y/o numeros).
+ * Guardar NOMBRE = COMANDO: Almacena temporalmente un comando con el nombre seleccionado para ser ejecutado con el comando mostrar (las variables deben ser cadenas de caracteres en minúscula y/o números).
 
  * Mostrar NOMBRE: Ejecuta el comando almacenado en NOMBRE.
 
- * Queja MENSAJE: En caso de encontrar algun problema con el bot pueden reailizar una queja.
+ * Queja MENSAJE: En caso de encontrar algún problema con el bot puede realizar una queja.
 
 ## Ejemplos:
  * "Viajes a Carcarañá, entre 12:00 y 15:30".

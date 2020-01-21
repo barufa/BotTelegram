@@ -8,6 +8,9 @@ install:
 	@stack setup
 	@stack build
 
+stack:
+	wget -qO- https://get.haskellstack.org/ | sh
+
 run:
 	@echo "Iniciando Programa..."
 	@stack exec MeQuieroVolver-exe
